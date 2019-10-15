@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace StandingTables.DAL.Models
 {
-    class Category
+    public class Category
     {
+        public int Id { get; set; }
+        public int Age { get; set; }
+        public int CategoryValue { get; set; }
     }
 }
