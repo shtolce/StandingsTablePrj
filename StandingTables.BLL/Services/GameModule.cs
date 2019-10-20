@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StandingTables.BLL.Services
 {
-    class GameModule : NinjectModule
+    public class GameModule : NinjectModule
     {
         public override void Load()
         {

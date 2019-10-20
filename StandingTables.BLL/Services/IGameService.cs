@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace StandingTables.BLL.Services
 {
-    interface IGameService
+    public interface IGameService
     {
-
+        void FillCategoriesIfNotExist();
+        void InitCategories();
 
     }
 }

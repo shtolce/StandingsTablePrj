@@ -13,6 +13,7 @@ namespace StandingTables.BLL
         public override void Load()
         {
             Bind<IUnitOfWork>().To<DapperUnitOfWork>();
+            
         }
     }
 }

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Ninject;
+using Ninject.Modules;
+using StandingTables.BLL;
+using StandingTables.BLL.Services;
 using StandingTables.DAL.Models;
 using StandingTables.DAL.Repositories;
 
@@ -226,8 +230,19 @@ namespace UnitTestProject
             repoCategory.Delete(catId);
 
         }
+        [TestMethod]
+        public void BLLtest()
+        {
+            NinjectModule gameModule = new GameModule();
+            NinjectModule serviceModule = new ServiceModule();
+            var kernel = new StandardKernel(gameModule, serviceModule);
+            var gameService = kernel.Get<IGameService>();
+            gameService.FillCategoriesIfNotExist();
+            //gameService.InitCategories();
 
 
+
+        }
 
 
 

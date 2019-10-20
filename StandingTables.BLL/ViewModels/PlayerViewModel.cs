@@ -1,14 +1,16 @@
-﻿using System;
+﻿using StandingTables.BLL.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StandingTables.DAL.Models
+namespace StandingTables.BLL.ViewModels
 {
     public enum genderType { male, female };
-    public enum ageCategoryType { kid,junior,adult };
-    public class Player
+    public enum ageCategoryType { kid, junior, adult };
+
+    public class PlayerViewModel
     {
         public int PlayerId { get; set; }
         public string PlayerFio { get; set; }
@@ -16,7 +18,9 @@ namespace StandingTables.DAL.Models
         public float PlayerHeight { get; set; }
         public float PlayerWeight { get; set; }
         public genderType PlayerGender { get; set; }
-        public Club Club { get; set; }
+        public string Club { get; set; }
+        public CategoryViewModel PlayerCategory { get;set; }
+
         public int PlayerUnits
         {
             get
@@ -31,7 +35,7 @@ namespace StandingTables.DAL.Models
                 TimeSpan diff = DateTime.Now.Subtract(PlayerBornDate);
                 int years = (int)Math.Floor(diff.Days / 365.0);
                 ageCategoryType? cat = null;
-                if (years>=12 && years<=15) cat = ageCategoryType.kid;
+                if (years >= 12 && years <= 15) cat = ageCategoryType.kid;
                 if (years >= 16 && years <= 17) cat = ageCategoryType.junior;
                 if (years >= 18) cat = ageCategoryType.adult;
                 return cat;

@@ -51,6 +51,21 @@ namespace StandingTables.DAL.Repositories
             }
         }
 
+        public IEnumerable<City> FindByName(string name)
+        {
+            var p = new DynamicParameters();
+            using (var db = new SQLiteConnection(connectionString))
+            {
+                db.Open();
+                string sqlQuery = "Select * From City where (CityName=@CityName)";
+                p.Add("@CityName", name);
+                var cities = db.Query<City>(sqlQuery,p);
+                db.Close();
+                return cities;
+            }
+            
+        }
+
         public City get(int id)
         {
             var p = new DynamicParameters();

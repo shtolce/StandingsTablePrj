@@ -51,6 +51,27 @@ namespace StandingTables.DAL.Repositories
             }
         }
 
+        public IEnumerable<Club> FindByName(string name)
+        {
+            var p = new DynamicParameters();
+            using (var db = new SQLiteConnection(connectionString))
+            {
+                db.Open();
+                var sqlQuery = "Select * " +
+                    "From Club cl join City ct on " +
+                    "ct.CityId = cl.CityId " +
+                    "where (cl.ClubName=@ClubName)";
+
+                p.Add("@ClubName", name);
+                var clubes = db.Query<Club, City, Club>(sqlQuery, (cl, city) => {
+                    cl.City = city;
+                    return cl;
+                }, p, splitOn: "CityId");
+                db.Close();
+                return clubes;
+            }
+        }
+
         public Club get(int id)
         {
             var p = new DynamicParameters();

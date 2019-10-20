@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ninject, Version=4.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.4.0.0-beta-0134\lib\net45\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.111.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -56,6 +59,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\StandingTables.BLL\StandingTables.BLL.csproj">
+      <Project>{8189608f-9692-42e1-b5f0-a2c1dffb2242}</Project>
+      <Name>StandingTables.BLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StandingTables.DAL\StandingTables.DAL.csproj">
       <Project>{a41f5f34-6654-485f-96b5-0cf27a302e5a}</Project>
       <Name>StandingTables.DAL</Name>

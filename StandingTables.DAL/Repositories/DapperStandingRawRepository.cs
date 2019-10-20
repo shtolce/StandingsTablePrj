@@ -56,6 +56,11 @@ namespace StandingTables.DAL.Repositories
             }
         }
 
+        public IEnumerable<StandingsRaw> FindByName(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public StandingsRaw get(int id)
         {
             var p = new DynamicParameters();

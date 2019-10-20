@@ -14,5 +14,6 @@ namespace StandingTables.DAL.Repositories
         void Create(T item);
         void Update(T item);
         void Delete(int id);
+        IEnumerable<T> FindByName(string name);
     }
 }

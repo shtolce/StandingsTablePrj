@@ -50,6 +50,11 @@ namespace StandingTables.DAL.Repositories
             }
         }
 
+        public IEnumerable<Category> FindByName(string name)
+        {
+            return new List<Category>();
+        }
+
         public Category get(int id)
         {
             var p = new DynamicParameters();
