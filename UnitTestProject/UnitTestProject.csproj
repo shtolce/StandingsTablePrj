@@ -59,10 +59,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StandingsTables\StandingsTables.csproj">
-      <Project>{404db332-1e68-4d01-b8f4-97d0b0459280}</Project>
-      <Name>StandingsTables</Name>
-    </ProjectReference>
     <ProjectReference Include="..\StandingTables.DAL\StandingTables.DAL.csproj">
       <Project>{a41f5f34-6654-485f-96b5-0cf27a302e5a}</Project>
       <Name>StandingTables.DAL</Name>

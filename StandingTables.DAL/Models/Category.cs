@@ -9,7 +9,7 @@ namespace StandingTables.DAL.Models
     public class Category
     {
         public int CategoryId { get; set; }
-        public int CategoryAge { get; set; }
+        public ageCategoryType CategoryAge { get; set; }
         public int CategoryValue { get; set; }
     }
 }

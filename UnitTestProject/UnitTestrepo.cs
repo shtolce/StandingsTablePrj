@@ -85,13 +85,13 @@ namespace UnitTestProject
             DapperCategoryRepository repoCategory = new DapperCategoryRepository();
             Category c = new Category
             {
-                CategoryAge = 18,
+                CategoryAge = ageCategoryType.junior,
                 CategoryValue = 180
             };
             repoCategory.Create(c);
             Assert.IsNotNull(c.CategoryId);
             c.CategoryValue = 185;
-            c.CategoryAge = 18;
+            c.CategoryAge = ageCategoryType.junior;
             repoCategory.Update(c);
             Assert.AreEqual(185, c.CategoryValue);
             repoCategory.get(c.CategoryId);
@@ -99,14 +99,14 @@ namespace UnitTestProject
             int Id = c.CategoryId;
             Category c1 = new Category
             {
-                CategoryAge = 18,
+                CategoryAge = ageCategoryType.junior,
                 CategoryValue = 185
             };
             repoCategory.Create(c1);
             Assert.AreEqual(0, c1.CategoryId);
             IEnumerable<Category> Categoryes = repoCategory.getAll();
             Assert.AreNotEqual(0, Categoryes.Count());
-            Assert.AreEqual(18, Categoryes.Where(Category => Category.CategoryAge == 18 && Category.CategoryValue==185).FirstOrDefault().CategoryAge);
+            Assert.AreEqual(ageCategoryType.junior, Categoryes.Where(Category => Category.CategoryAge == ageCategoryType.junior && Category.CategoryValue==185).FirstOrDefault().CategoryAge);
             repoCategory.Delete(Id);
 
         }
@@ -200,7 +200,7 @@ namespace UnitTestProject
             DapperCategoryRepository repoCategory = new DapperCategoryRepository();
             Category cat = new Category
             {
-                CategoryAge = 18,
+                CategoryAge = ageCategoryType.junior,
                 CategoryValue = 180
             };
             repoCategory.Create(cat);

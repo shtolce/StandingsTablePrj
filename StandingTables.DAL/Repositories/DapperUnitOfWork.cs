@@ -8,7 +8,7 @@ using StandingTables.DAL.Models;
 namespace StandingTables.DAL.Repositories
 {
     //1111
-    class DapperUnitOfWork : IUnitOfWork
+    public class DapperUnitOfWork : IUnitOfWork
     {
         private DapperCategoryRepository categories;
         private DapperCityRepository cities;

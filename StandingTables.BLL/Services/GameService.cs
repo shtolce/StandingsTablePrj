@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StandingTables.BLL
+namespace StandingTables.BLL.Services
 {
-    public class Class1
+    class GameService:IGameService
     {
     }
 }

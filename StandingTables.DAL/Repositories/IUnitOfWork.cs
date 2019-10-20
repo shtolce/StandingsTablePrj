@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StandingTables.DAL.Repositories
 {
-    interface IUnitOfWork:IDisposable
+    public interface IUnitOfWork:IDisposable
     {
         IRepository<Category> Categories { get; }
         IRepository<City> Cities { get; }

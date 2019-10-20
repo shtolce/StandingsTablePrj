@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace StandingTables.DAL.Models
 {
     public enum genderType { male, female };
+    public enum ageCategoryType { kid,junior,adult };
     public class Player
     {
         public int PlayerId { get; set; }
@@ -22,6 +23,20 @@ namespace StandingTables.DAL.Models
             {
                 return (int)Math.Floor(PlayerHeight + PlayerWeight);
             }
+        }
+        public ageCategoryType? PlayerageCategory
+        {
+            get
+            {
+                TimeSpan diff = DateTime.Now.Subtract(PlayerBornDate);
+                int years = (int)Math.Floor(diff.Days / 365.0);
+                ageCategoryType? cat = null;
+                if (years>=12 && years<=15) cat = ageCategoryType.kid;
+                if (years >= 16 && years <= 17) cat = ageCategoryType.junior;
+                if (years >= 18) cat = ageCategoryType.adult;
+                return cat;
+            }
+
         }
 
 
