@@ -8,11 +8,11 @@ namespace StandingTables.DAL.Models
 {
     public class StandingsRaw
     {
-        public int Id { get; set; }
+        public int StandingsRawId { get; set; }
         public Player Player { get; set; }
         public Category Category { get; set; }
-        public int Level { get; set; }
-        public int PairNum { get; set; }
-        public genderType Gender { get; set; }
+        public int StandingsRawLevel { get; set; }
+        public int StandingsRawPairNum { get; set; }
+        public genderType StandingsRawGender { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using StandingTables.DAL.Repositories;
+﻿using StandingTables.DAL.Models;
+using StandingTables.DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,6 @@ namespace TestInterface
     {
         static void Main(string[] args)
         {
-            DapperPlayerRepository repo = new DapperPlayerRepository();
-
 
 
         }

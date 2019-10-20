@@ -17,55 +17,7 @@ namespace StandingTables.DAL.Repositories
         public DapperPlayerRepository()
         {
             string pathLoc = AppDomain.CurrentDomain.BaseDirectory;
-
-            using (var db = new SQLiteConnection(connectionString))
-            {
-                db.Open();
-                var s = db.State;
-                string sqlQuery =   "CREATE TABLE IF NOT EXISTS Player(" +
-                                    "Id       INTEGER Primary Key,"      +
-                                    "Fio      TEXT,"                     +
-                                    "BornDate TEXT,"                     +
-                                    "Height   REAL,"                     +
-                                    "Weight   REAL,"                     +
-                                    "Gender   TEXT,"                     +
-                                    "ClubId   INTEGER,"                  +
-                                    "Units    TEXT,"                     +
-                                    "Foreign Key(ClubId) references Club(id)" +
-                                    ")";
-                db.Execute(sqlQuery);
-                sqlQuery = "CREATE TABLE IF NOT EXISTS Club("         +
-                            "Id             INTEGER Primary Key,"     +
-                            "Name           TEXT ,"                   +
-                            "CityId         INTEGER,"                 +
-                            "Foreign Key(CityId) references City(id)" +
-                            ")";
-                db.Execute(sqlQuery);
-                sqlQuery = "CREATE TABLE IF NOT EXISTS City(" +
-                           "Id       INTEGER Primary Key,"    +
-                           "Name     TEXT "                   +
-                           ")";
-                db.Execute(sqlQuery);
-                sqlQuery = "CREATE TABLE IF NOT EXISTS Category("   +
-                           "Id                INTEGER Primary Key," +
-                           "Age               INTEGER ,"            +
-                           "CategoryValue     INTEGER "             +
-                           ")";
-                db.Execute(sqlQuery);
-                sqlQuery = "CREATE TABLE IF NOT EXISTS StandingRaw(" +
-                           "Id                INTEGER Primary Key,"  +
-                           "PlayerId          INTEGER ,"             +
-                           "CategoryId        INTEGER ,"             +
-                           "Level             INTEGER ,"             +
-                           "PairNum           INTEGER ,"             +
-                           "Gender            TEXT    ,"             +
-                           "Foreign Key(PlayerId) references Player(id),"     +
-                           "Foreign Key(CategoryId) references Category(id)"  +
-                           ")";
-                db.Execute(sqlQuery);
-                db.Close();
-            }
-
+            DapperDbInitializator.DbInit();
         }
 
         public void Create(Player item)
@@ -73,38 +25,105 @@ namespace StandingTables.DAL.Repositories
             using (var db = new SQLiteConnection(connectionString))
             {
                 db.Open();
+                string sqlQuery = "Insert into Player(PlayerFio,PlayerBornDate,PlayerHeight,PlayerWeight,PlayerGender,ClubId)" +
+                    "values" +
+                    "(@PlayerFio,@PlayerBornDate,@PlayerHeight,@PlayerWeight,@PlayerGender,@ClubId);" +
+                    "SELECT CAST(last_insert_rowid() as int)";
 
-
-
-
+                var _item = new
+                {
+                    PlayerFio = item.PlayerFio,
+                    PlayerBornDate = item.PlayerBornDate,
+                    PlayerHeight = item.PlayerHeight,
+                    PlayerWeight = item.PlayerWeight,
+                    PlayerGender = item.PlayerGender,
+                    ClubId = item.Club.ClubId
+                };
+                int? id =  db.Query<int>(sqlQuery, _item).FirstOrDefault();
+                if (id!=null) item.PlayerId = (int)id;
+                db.Close();
             }
-
-
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
-        }
+            using (var db = new SQLiteConnection(connectionString))
+            {
+                db.Open();
+                string sqlQuery = "Delete from Player Where (PlayerId = @Id)";
+                db.Execute(sqlQuery, new { Id = id });
+                db.Close();
 
-        public IEnumerable<Player> find(Func<Player, bool> predicate)
-        {
-            throw new NotImplementedException();
+            }
         }
 
         public Player get(int id)
         {
-            throw new NotImplementedException();
+            var p = new DynamicParameters();
+            using (var db = new SQLiteConnection(connectionString))
+            {
+                db.Open();
+                string sqlQuery = "Select * " +
+                    "from Player pl join Club cl on " +
+                    "pl.ClubId = cl.ClubId " +
+                    "where (PlayerId=@Id) ";
+                p.Add("@Id", id);
+                var player = db.Query<Player,Club,Player>(sqlQuery, (pl,cl)=>
+                {
+                    pl.Club = cl;
+                    return pl;
+                },p,splitOn:"ClubId").FirstOrDefault();
+                db.Close();
+                return player;
+            }
         }
 
         public IEnumerable<Player> getAll()
         {
-            throw new NotImplementedException();
+            using (var db = new SQLiteConnection(connectionString))
+            {
+                db.Open();
+                string sqlQuery = "Select * " +
+                    "From Player pl join Club cl on " +
+                    "pl.CLubId = cl.ClubId ";
+                var players = db.Query<Player, Club, Player>(sqlQuery, (pl, cl) =>
+                {
+                    pl.Club = cl;
+                    return pl;
+                },splitOn: "ClubId");
+
+
+                db.Close();
+                return players;
+            }
         }
 
         public void Update(Player item)
         {
-            throw new NotImplementedException();
+            using (var db = new SQLiteConnection(connectionString))
+            {
+                db.Open();
+                string sqlQuery = "UPDATE Player " +
+                                    "SET " +
+                                    "PlayerFio = @PlayerFio, " +
+                                    "PlayerBornDate = @PlayerBornDate, " +
+                                    "PlayerHeight = @PlayerHeight," +
+                                    "PlayerWeight = @PlayerWeight, " +
+                                    "PlayerGender = @PlayerGender " +
+                                    "WHERE (ClubId=@ClubId)";
+
+                var _item = new
+                {
+                    PlayerFio = item.PlayerFio,
+                    PlayerBornDate = item.PlayerBornDate,
+                    PlayerHeight = item.PlayerHeight,
+                    PlayerWeight = item.PlayerWeight,
+                    PlayerGender = item.PlayerGender,
+                    ClubId = item.Club.ClubId
+                };
+                db.Execute(sqlQuery, _item);
+                db.Close();
+            }
         }
     }
 }

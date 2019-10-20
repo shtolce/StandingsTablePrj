@@ -9,18 +9,18 @@ namespace StandingTables.DAL.Models
     public enum genderType { male, female };
     public class Player
     {
-        public int Id { get; set; }
-        public string Fio { get; set; }
-        public DateTime BornDate { get; set; }
-        public float Height { get; set; }
-        public float Weight { get; set; }
-        public genderType Gender { get; set; }
+        public int PlayerId { get; set; }
+        public string PlayerFio { get; set; }
+        public DateTime PlayerBornDate { get; set; }
+        public float PlayerHeight { get; set; }
+        public float PlayerWeight { get; set; }
+        public genderType PlayerGender { get; set; }
         public Club Club { get; set; }
-        public int Units
+        public int PlayerUnits
         {
             get
             {
-                return (int)Math.Floor(Height + Weight);
+                return (int)Math.Floor(PlayerHeight + PlayerWeight);
             }
         }
 

@@ -10,8 +10,7 @@ namespace StandingTables.DAL.Repositories
     public interface IRepository<T> where T:class
     {
         IEnumerable<T> getAll();
-        Player get(int id);
-        IEnumerable<T> find(Func<T, Boolean> predicate);
+        T get(int id);
         void Create(T item);
         void Update(T item);
         void Delete(int id);
