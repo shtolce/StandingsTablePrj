@@ -1,5 +1,4 @@
-﻿using StandingTables.BLL.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +18,8 @@ namespace StandingTables.BLL.ViewModels
         public float PlayerWeight { get; set; }
         public genderType PlayerGender { get; set; }
         public string Club { get; set; }
-        public CategoryViewModel PlayerCategory { get;set; }
+        public string City { get; set; }
+        public CategoryViewModel PlayerCategory { get; set; }
 
         public int PlayerUnits
         {

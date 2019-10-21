@@ -66,8 +66,8 @@ namespace StandingTables.DAL.Repositories
                 string sqlQuery = "Select * " +
                     "from Player pl join Club cl on " +
                     "pl.ClubId = cl.ClubId " +
-                    "where (PlayerFio=@PlayerFio) ";
-                p.Add("@PlayerFio", name);
+                    "where (PlayerFio like @PlayerFio) ";
+                p.Add("@PlayerFio", "%"+name+"%");
                 var players = db.Query<Player, Club, Player>(sqlQuery, (pl, cl) =>
                 {
                     pl.Club = cl;
