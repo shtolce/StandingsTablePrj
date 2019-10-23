@@ -17,5 +17,6 @@ namespace StandingTables.BLL.Services
         List<PlayerViewModel> GetAllPlayers();
         List<PlayerViewModel> GetByPlayersName(string fio);
         void GenerateStandingsRaw();
+        void AddStandingRawRecord(PlayerViewModel pl, int level, int pairNum);
     }
 }

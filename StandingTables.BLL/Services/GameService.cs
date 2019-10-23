@@ -14,8 +14,6 @@ namespace StandingTables.BLL.Services
     {
         private IUnitOfWork repo;
         public List<CategoryViewModel> categoriesVM { get; set; }
-
-
         public GameService(IUnitOfWork repo)
         {
             this.repo = repo;
@@ -26,7 +24,7 @@ namespace StandingTables.BLL.Services
         }
         public void InitCategories()
         {
-        	int[] catListKid = new int[] { 190, 200, 210, 220, 230, 240, 250, 999 };
+            int[] catListKid = new int[] { 190, 200, 210, 220, 230, 240, 250, 999 };
             int[] catListJunior = new int[] { 210, 220, 230, 240, 250, 260, 999 };
             int[] catListAdult = new int[] { 230, 240, 250, 260, 270, 999 };
             Category category;
@@ -69,10 +67,10 @@ namespace StandingTables.BLL.Services
         public CategoryViewModel getCategoryVM(int playerUnits, DAL.Models.ageCategoryType? playerAgeCategory)
         {
             int catNum = this.categoriesVM.FindAll(c => c.CategoryAge == (int)playerAgeCategory && c.CategoryValue >= playerUnits)
-                .Max(c=>c.CategoryValue);
-            if (catNum==999)
+                .Min(c => c.CategoryValue);
+            if (catNum == 999)
                 catNum = this.categoriesVM.FindAll(c => c.CategoryAge == (int)playerAgeCategory && c.CategoryValue != 999)
-                    .Max(c=>c.CategoryValue);
+                    .Max(c => c.CategoryValue);
             return this.categoriesVM.FindAll(c => c.CategoryAge == (int)playerAgeCategory && c.CategoryValue == catNum).FirstOrDefault();
         }
 
@@ -80,14 +78,14 @@ namespace StandingTables.BLL.Services
         {
             var playersRepo = this.repo.Players.getAll();
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Player, PlayerViewModel>()
-            .ForMember("Club",opt=>opt.MapFrom(
-                c=>c.Club.ClubName
-            ))
+            .ForMember("Club", opt => opt.MapFrom(
+                 c => c.Club.ClubName
+             ))
             .ForMember("City", opt => opt.MapFrom(
                  c => c.Club.City.CityName
              ))
             .ForMember("PlayerCategory", opt => opt.MapFrom(
-                 c => getCategoryVM(c.PlayerUnits,c.PlayerAgeCategory)
+                 c => getCategoryVM(c.PlayerUnits, c.PlayerAgeCategory)
              ))
             ).CreateMapper();
             var players = mapper.Map<IEnumerable<Player>, List<PlayerViewModel>>(playersRepo);
@@ -121,7 +119,7 @@ namespace StandingTables.BLL.Services
                 City tempCity = repo.Cities.FindByName(player.City).FirstOrDefault();
                 if (tempCity == null)
                 {
-                    tempCity = new City { CityName = player.City??"default" };
+                    tempCity = new City { CityName = player.City ?? "default" };
                     repo.Cities.Create(tempCity);
                 }
                 tempClub = new Club
@@ -137,15 +135,33 @@ namespace StandingTables.BLL.Services
             playerRepo = mapper.Map<PlayerViewModel, Player>(player);
             repo.Players.Create(playerRepo);
         }
+        public void AddStandingRawRecord(PlayerViewModel pl, int level, int pairNum)
+        {
+            int ca = pl.PlayerCategory.CategoryAge;
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<PlayerViewModel, Player>()
+            .ForMember("Club", opt => opt.MapFrom(
+                 c => repo.Clubes.FindByName(c.Club).FirstOrDefault()
+             ))
+            ).CreateMapper();
+            var player = mapper.Map<PlayerViewModel,Player>(pl);
+            var rs = new StandingsRaw
+            {
+                Category = new Category
+                {
+                    CategoryValue = pl.PlayerCategory.CategoryValue,
+                    CategoryAge = (DAL.Models.ageCategoryType)Enum.GetValues(typeof(DAL.Models.ageCategoryType)).GetValue(0)
+                },
+                Player = player,
+                StandingsRawLevel = level,
+                StandingsRawPairNum = pairNum
+            };
+            repo.StandingRaws.Create(rs);
+        }
         public void GenerateStandingsRaw()
         {
-            var cat = this.categoriesVM.Select(c => c.CategoryValue == 180 && c.CategoryAge == 1).FirstOrDefault();
-            
-
             var players = this.GetAllPlayers();
-
-
-
+            var selectedItems = from player in players
+                                    group player by player.PlayerCategory;
         }
 
     }
